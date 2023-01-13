@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class ExpendCategories extends Model
 {
 
-    protected $table = "hb__expend_categories";
+    protected $table = "expend_categories";
 
     protected $fillable = [
         'name',

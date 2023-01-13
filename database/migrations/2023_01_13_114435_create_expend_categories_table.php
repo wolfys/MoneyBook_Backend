@@ -8,7 +8,7 @@ return new class extends Migration {
 
     public function up(): void
     {
-        Schema::create('hb__expend_categories', static function (Blueprint $table) {
+        Schema::create('expend_categories', static function (Blueprint $table) {
             $table->id();
 
             $table->string('name')->comment('Название категории');
@@ -24,6 +24,6 @@ return new class extends Migration {
 
     public function down() :void
     {
-        Schema::dropIfExists('hb__expend_categories');
+        Schema::dropIfExists('expend_categories');
     }
 };

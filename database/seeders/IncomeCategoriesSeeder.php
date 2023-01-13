@@ -30,9 +30,9 @@ class IncomeCategoriesSeeder extends Seeder
             $i++;
         }
 
-        \DB::table('hb__income_categories')->insert($data);
+        \DB::table('income_categories')->insert($data);
 
-        \DB::table('hb__income_categories')->insert([
+        \DB::table('income_categories')->insert([
             'name' => 'Нашёл на улице',
             'user_id' => 1,
             'created_at' => now(),

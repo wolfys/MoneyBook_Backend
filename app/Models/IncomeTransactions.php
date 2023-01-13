@@ -38,7 +38,7 @@ class IncomeTransactions extends Model
         'date_transaction' => 'date:d.m.Y H:i',
     ];
 
-    public function incomeCategory(): belongsTo
+    public function category(): belongsTo
     {
         return $this->belongsTo(IncomeCategories::class);
     }

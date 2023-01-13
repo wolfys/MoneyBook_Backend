@@ -10,10 +10,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed $user_id
  * @property mixed $user
  * @property mixed $category_id
- * @property mixed $incomeCategory
  * @property mixed $money
  * @property mixed $comment
  * @property mixed $credit
+ * @property mixed $category
  */
 class TransactionsResource extends JsonResource
 {
@@ -28,7 +28,7 @@ class TransactionsResource extends JsonResource
             'user_id' => $this->user_id,
             'user' => getUserInitials($this->user->name,  $this->user->last_name,  $this->user->second_name),
             'category_id' => $this->category_id,
-            'category_name' => $this->incomeCategory->name,
+            'category_name' => $this->category->name,
             'money' => $this->money,
             'comment' => $this->comment,
             'credit' => $this->credit,

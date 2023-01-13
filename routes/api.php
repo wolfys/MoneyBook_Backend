@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Core\RegisterController;
 use App\Http\Controllers\Api\Handbook\ExpendCategoriesController;
 use App\Http\Controllers\Api\Handbook\IncomeCategoriesController;
 use App\Http\Controllers\Api\Core\IncomeTransactionsController;
+use App\Http\Controllers\Api\Core\ExpendTransactionsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,21 +29,20 @@ Route::group(
 Route::group(
     [
         'middleware' => 'auth:sanctum',
-        'prefix' => 'handbook'
+        'prefix' => 'income'
     ], static function () {
-    // Доход
-    Route::resource('expend/categories', ExpendCategoriesController::class, ['as' => 'expend']);
     // Расход
-    Route::resource('income/categories', IncomeCategoriesController::class, ['as' => 'income']);
+    Route::resource('categories', IncomeCategoriesController::class, ['as' => 'income']);
+    Route::resource('transactions', IncomeTransactionsController::class, ['as' => 'income']);
 });
 
 Route::group(
     [
         'middleware' => 'auth:sanctum',
-        'prefix' => 'core'
+        'prefix' => 'expend'
     ], static function () {
-
-    // Расход
-    Route::resource('income/transactions', IncomeTransactionsController::class, ['as' => 'income']);
+    // Доход
+    Route::resource('categories', ExpendCategoriesController::class, ['as' => 'expend']);
+    Route::resource('transactions', ExpendTransactionsController::class, ['as' => 'expend']);
 });
 

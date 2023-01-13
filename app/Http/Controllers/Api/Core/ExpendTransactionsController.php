@@ -7,16 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Core\IndexTransactionsRequest;
 use App\Http\Requests\Core\TransactionsRequest;
 use App\Http\Resources\Core\TransactionsResource;
-use App\Models\IncomeTransactions;
+use App\Models\ExpendTransactions;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
-class IncomeTransactionsController extends Controller
+class ExpendTransactionsController extends Controller
 {
     /**
-     * Получить все транзакции по доходам доступные пользователю за определенный период.
+     * Получить все транзакции по расходам доступные пользователю за определенный период.
      *
-     * @group Доходы
+     * @group Расходы
      * @subgroup Транзакции
      * @bodyParam start_date date required Дата начала периода. Example: 13.01.2023
      * @bodyParam end_date date required Дата начала окончания периода. Example: 13.01.2023
@@ -28,20 +28,20 @@ class IncomeTransactionsController extends Controller
         $start_date = Carbon::parse($request->get('start_date'))->format('Y-m-d 00:00:00');
         $end_date = Carbon::parse($request->get('end_date'))->format('Y-m-d 23:59:59');
 
-        $data = IncomeTransactions::where('user_id', '=', auth()->user()->id)
-            ->select('*','income_category_id as category_id')
+        $data = ExpendTransactions::where('user_id', '=', auth()->user()->id)
+            ->select('*','expend_category_id as category_id')
             ->whereDate('date_transaction', '>=', $start_date)
             ->whereDate('date_transaction', '<=', $end_date)
             ->with('category','user')
             ->get();
 
-        return $this->sendResponse(TransactionsResource::collection($data),'Получаем список доходов');
+        return $this->sendResponse(TransactionsResource::collection($data),'Получаем список расходов');
     }
 
     /**
-     * Добавить новую транзакцию по доходам.
+     * Добавить новую транзакцию по расходам.
      *
-     * @group Доходы
+     * @group Расходы
      * @subgroup Транзакции
      * @bodyParam category_id int required Категория доходов. Example: 1
      * @bodyParam money int required Кол-во затраченных средств. Example: 500
@@ -55,7 +55,7 @@ class IncomeTransactionsController extends Controller
     {
         $request->validated();
 
-        \App\Models\IncomeTransactions::create([
+        ExpendTransactions::create([
            'user_id' => auth()->user()->id,
            'income_category_id' => $request->get('category_id'),
             'money' => $request->get('money'),
@@ -64,13 +64,13 @@ class IncomeTransactionsController extends Controller
             'credit' => $request->get('credit')
         ]);
 
-        return $this->sendResponseDataNull('Запись о доходах успешно добавлена');
+        return $this->sendResponseDataNull('Запись о расходах успешно добавлена');
     }
 
     /**
-     * Поиск записи о доходах.
+     * Поиск записи о расходах.
      *
-     * @group Доходы
+     * @group Расходы
      * @subgroup Транзакции
      * @urlParam id int required ID записи дохода для поиска. Example: 1
      * @authenticated
@@ -79,20 +79,21 @@ class IncomeTransactionsController extends Controller
     public function show($id)
     {
 
-        $data = IncomeTransactions::where('id', '=', $id)
-            ->select('*','income_category_id as category_id')
-            ->with('category','user')->first();
+        $data = ExpendTransactions::where('id', '=', $id)
+            ->with('category','user')
+            ->select('*','expend_category_id as category_id')
+            ->first();
 
-        checkUsers($data,'income-transactions');
+        checkUsers($data,'expend-transactions');
 
         return $this->sendResponse(new TransactionsResource($data),
-            "Запись {$id} в транзакциях доходов найдена");
+            "Запись {$id} в транзакциях расходов найдена");
     }
 
     /**
-     * Изменить запись транзакции по доходам.
+     * Изменить запись транзакции по расходам.
      *
-     * @group Доходы
+     * @group Расходы
      * @subgroup Транзакции
      * @urlParam id int required ID записи дохода для поиска. Example: 1
      * @bodyParam category_id int required Категория доходов. Example: 1
@@ -105,9 +106,9 @@ class IncomeTransactionsController extends Controller
      */
     public function update(TransactionsRequest $request, $id)
     {
-        checkUsers(IncomeTransactions::where('id', '=', $id)->first(),'income-transactions');
+        checkUsers(ExpendTransactions::where('id', '=', $id)->first(),'expend-transactions');
 
-        IncomeTransactions::where('id', '=', $id)->update([
+        ExpendTransactions::where('id', '=', $id)->update([
             'income_category_id' => $request->get('category_id'),
             'money' => $request->get('money'),
             'comment' => $request->get('comment'),
@@ -115,13 +116,13 @@ class IncomeTransactionsController extends Controller
             'credit' => $request->get('credit')
         ]);
 
-        return $this->sendResponseDataNull('Запись о доходах успешно изменена');
+        return $this->sendResponseDataNull('Запись о расходах успешно изменена');
     }
 
     /**
      * Удалить записи о доходах.
      *
-     * @group Доходы
+     * @group Расходы
      * @subgroup Транзакции
      * @urlParam id int required ID записи дохода для поиска. Example: 1
      * @authenticated
@@ -129,10 +130,10 @@ class IncomeTransactionsController extends Controller
      */
     public function destroy($id)
     {
-        checkUsers(IncomeTransactions::where('id', '=', $id)->first(),'income-transactions');
+        checkUsers(ExpendTransactions::where('id', '=', $id)->first(),'expend-transactions');
 
-        IncomeTransactions::where('id', '=', $id)->delete();
+        ExpendTransactions::where('id', '=', $id)->delete();
 
-        return $this->sendResponseDataNull('Запись о доходах успешно удалена');
+        return $this->sendResponseDataNull('Запись о расходах успешно удалена');
     }
 }

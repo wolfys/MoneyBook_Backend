@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class IncomeCategories extends Model
 {
-    protected $table = "hb__income_categories";
+    protected $table = "income_categories";
 
     protected $fillable = [
         'name',

@@ -21,7 +21,7 @@ return new class extends Migration {
 
             $table->foreign('income_category_id')
                 ->references('id')
-                ->on('hb__income_categories')
+                ->on('income_categories')
                 ->onDelete('cascade');
 
             $table->bigInteger('money')->comment('Кол-во потраченных денег');

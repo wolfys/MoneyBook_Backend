@@ -55,9 +55,9 @@ class ExpendCategoriesSeeder extends Seeder
             $i++;
         }
 
-        \DB::table('hb__expend_categories')->insert($data);
+        \DB::table('expend_categories')->insert($data);
 
-        \DB::table('hb__expend_categories')->insert([
+        \DB::table('expend_categories')->insert([
            'name' => 'Шоколадки',
            'user_id' => 1,
            'created_at' => now(),

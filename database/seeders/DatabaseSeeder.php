@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\IncomeTransactions::factory(10)->create();
+        \App\Models\ExpendTransactions::factory(10)->create();
         \App\Models\User::factory(10)->create();
     }
 }
