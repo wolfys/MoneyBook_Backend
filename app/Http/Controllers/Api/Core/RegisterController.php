@@ -4,16 +4,15 @@
 namespace App\Http\Controllers\Api\Core;
 
 
-use App\Http\Requests\RegisterRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Core\RegisterRequest;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\BaseController as BaseController;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Validator;
 
 
-class RegisterController extends BaseController
+class RegisterController extends Controller
 
 {
     /**

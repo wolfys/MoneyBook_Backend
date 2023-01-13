@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use App\Models\Handbook\IncomeCategories;
-use Illuminate\Support\Facades\Gate;
-use App\Models\Handbook\ExpendCategories;
+use App\Models\ExpendCategories;
+use App\Models\ExpendTransactions;
+use App\Models\IncomeCategories;
+use App\Models\IncomeTransactions;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -29,12 +31,21 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //
-        Gate::define('update-expend-categories', static function (User $user, ExpendCategories $categories) {
+        Gate::define('expend-categories', static function (User $user, ExpendCategories $categories) {
             return $user->id === $categories->user_id;
         });
 
-        Gate::define('update-income-categories', static function (User $user, IncomeCategories $categories) {
+        Gate::define('income-categories', static function (User $user, IncomeCategories $categories) {
             return $user->id === $categories->user_id;
         });
+
+        Gate::define('expend-transactions', static function (User $user, ExpendTransactions $transactions) {
+            return $user->id === $transactions->user_id;
+        });
+
+        Gate::define('income-transactions', static function (User $user, IncomeTransactions $transactions) {
+            return $user->id === $transactions->user_id;
+        });
+
     }
 }

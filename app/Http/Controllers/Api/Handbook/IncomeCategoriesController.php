@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers\Api\Handbook;
 
-use App\Http\Controllers\BaseController;
-use App\Http\Requests\CategoriesRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Handbook\CategoriesRequest;
 use App\Http\Resources\Handbook\CategoriesResource;
-use App\Models\Handbook\IncomeCategories;
-use Gate;
+use App\Models\IncomeCategories;
 use Illuminate\Http\JsonResponse;
 
-class IncomeCategoriesController extends BaseController
+class IncomeCategoriesController extends Controller
 {
 
 
     /**
      * Получить все категории доступные пользователю.
      *
-     * @group Справочники
-     * @subgroup Категории доходов
+     * @group Доходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
@@ -35,8 +34,8 @@ class IncomeCategoriesController extends BaseController
      * Добавить категорию доходов.
      *
      * @bodyParam name string required Название категории. Example: Лотерея
-     * @group Справочники
-     * @subgroup Категории доходов
+     * @group Доходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
@@ -60,21 +59,16 @@ class IncomeCategoriesController extends BaseController
      * Можно искать только категории который, создал пользователь.
      *
      * @urlParam id int required ID категории доходов для поиска. Example: 8
-     * @group Справочники
-     * @subgroup Категории доходов
+     * @group Доходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
     public function show($id)
     {
-
-        if (IncomeCategories::find($id) === null || !Gate::allows('update-income-categories',
-                IncomeCategories::find($id))) {
-            return $this->sendError('Пункт не найден или его редактирование запрещено.');
-        }
-
         $data = IncomeCategories::where('id', '=', $id)->first();
 
+       checkUsers($data,'income-categories');
 
         return $this->sendResponse(new CategoriesResource($data),
             "Запись {$id} в Категория доходов найдена");
@@ -87,8 +81,8 @@ class IncomeCategoriesController extends BaseController
      *
      * @urlParam id int required ID категории доходов для поиска. Example: 8
      * @bodyParam name string required Название категории. Example: Нашёл на улице
-     * @group Справочники
-     * @subgroup Категории доходов
+     * @group Доходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
@@ -96,10 +90,7 @@ class IncomeCategoriesController extends BaseController
     {
         $request->validated();
 
-        if (IncomeCategories::find($id) === null || !Gate::allows('update-income-categories',
-                IncomeCategories::find($id))) {
-            return $this->sendError('Пункт не найден или его редактирование запрещено.');
-        }
+        checkUsers(IncomeCategories::where('id', '=', $id)->first(),'income-categories');
 
         IncomeCategories::where('id', '=', $id)->update([
             'user_id' => auth()->user()->id,
@@ -115,21 +106,18 @@ class IncomeCategoriesController extends BaseController
      * Можно удалять только категории который, создал пользователь.
      *
      * @urlParam id int required ID категории доходов для поиска. Example: 8
-     * @group Справочники
-     * @subgroup Категории доходов
+     * @group Доходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
     public function destroy($id)
     {
-        if (IncomeCategories::find($id) === null || !Gate::allows('update-income-categories',
-                IncomeCategories::find($id))) {
-            return $this->sendError('Пункт не найден или его редактирование запрещено.');
-        }
-
+        checkUsers(IncomeCategories::where('id', '=', $id)->first(),'income-categories');
 
         IncomeCategories::where('id', '=', $id)->delete();
 
         return $this->sendResponseDataNull('Пункт в справочнике категория доходов успешно удален');
     }
+
 }

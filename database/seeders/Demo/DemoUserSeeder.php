@@ -12,6 +12,7 @@ class DemoUserSeeder extends Seeder
         DB::table('users')->insert([
            'name' => 'Илья',
            'second_name' => 'Платонов',
+           'last_name' => 'Владимирович',
            'email' => 'example@ge-world.ru',
            'email_verified_at' => now(),
            'password' => bcrypt('123123'),

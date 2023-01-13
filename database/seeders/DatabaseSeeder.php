@@ -27,5 +27,8 @@ class DatabaseSeeder extends Seeder
             ExpendCategoriesSeeder::class,
             IncomeCategoriesSeeder::class,
         ]);
+
+        \App\Models\IncomeTransactions::factory(10)->create();
+        \App\Models\User::factory(10)->create();
     }
 }

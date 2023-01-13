@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed $active
  * @property mixed $created_at
  * @property mixed $updated_at
+ *   @property mixed $user_id
  */
 class CategoriesResource extends JsonResource
 {
@@ -24,6 +25,7 @@ class CategoriesResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'user_id' => !(($this->user_id === null)),
             'created_date' => ($this->updated_at === null) ? $this->convertDate($this->created_at)
                 : $this->convertDate($this->updated_at),
         ];

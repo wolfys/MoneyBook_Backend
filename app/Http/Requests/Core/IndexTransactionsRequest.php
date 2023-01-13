@@ -1,22 +1,18 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Core;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RegisterRequest extends FormRequest
+class IndexTransactionsRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'second_name' => 'nullable|string',
-            'last_name' => 'nullable|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string',
-            'c_password' => 'required|string|same:password',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date'
         ];
     }
 

@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers\Api\Handbook;
 
-use App\Http\Controllers\BaseController;
-use App\Http\Requests\CategoriesRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Handbook\CategoriesRequest;
 use App\Http\Resources\Handbook\CategoriesResource;
-use App\Models\Handbook\ExpendCategories;
-use Gate;
+use App\Models\ExpendCategories;
 use Illuminate\Http\JsonResponse;
 
-class ExpendCategoriesController extends BaseController
+class ExpendCategoriesController extends Controller
 {
 
 
     /**
      * Получить все категории доступные пользователю.
      *
-     * @group Справочники
-     * @subgroup Категории Расходов
+     * @group Расходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
@@ -35,8 +34,8 @@ class ExpendCategoriesController extends BaseController
      * Добавить категорию расходов.
      *
      * @bodyParam name string required Название категории. Example: Шоколадки
-     * @group Справочники
-     * @subgroup Категории Расходов
+     * @group Расходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
@@ -60,21 +59,16 @@ class ExpendCategoriesController extends BaseController
      * Можно искать только категории который, создал пользователь.
      *
      * @urlParam id int required ID категории расходов для поиска. Example: 33
-     * @group Справочники
-     * @subgroup Категории Расходов
+     * @group Расходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
     public function show($id)
     {
-
-        if (ExpendCategories::find($id) === null || !Gate::allows('update-expend-categories',
-                ExpendCategories::find($id))) {
-            return $this->sendError('Пункт не найден или его редактирование запрещено.');
-        }
-
         $data = ExpendCategories::where('id', '=', $id)->first();
 
+        checkUsers($data,'expend-categories');
 
         return $this->sendResponse(new CategoriesResource($data),
             "Запись {$id} в Категория расходов найдена");
@@ -87,8 +81,8 @@ class ExpendCategoriesController extends BaseController
      *
      * @urlParam id int required ID категории расходов для поиска. Example: 33
      * @bodyParam name string required Название категории. Example: Шоколадки
-     * @group Справочники
-     * @subgroup Категории Расходов
+     * @group  Расходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
@@ -96,10 +90,7 @@ class ExpendCategoriesController extends BaseController
     {
         $request->validated();
 
-        if (ExpendCategories::find($id) === null || !Gate::allows('update-expend-categories',
-                ExpendCategories::find($id))) {
-            return $this->sendError('Пункт не найден или его редактирование запрещено.');
-        }
+        checkUsers(ExpendCategories::where('id', '=', $id)->first(),'expend-categories');
 
         ExpendCategories::where('id', '=', $id)->update([
             'user_id' => auth()->user()->id,
@@ -115,20 +106,16 @@ class ExpendCategoriesController extends BaseController
      * Можно удалять только категории который, создал пользователь.
      *
      * @urlParam id int required ID категории расходов для поиска. Example: 33
-     * @group Справочники
-     * @subgroup Категории Расходов
+     * @group Расходы
+     * @subgroup Категории
      * @authenticated
      * @return JsonResponse
      */
     public function destroy($id)
     {
-        if (ExpendCategories::find($id) === null || !Gate::allows('update-categories',
-                ExpendCategories::find($id))) {
-            return $this->sendError('Пункт не найден или его редактирование запрещено.');
-        }
+        checkUsers(\App\Models\ExpendCategories::where('id', '=', $id)->first(),'expend-categories');
 
-
-        ExpendCategories::where('id', '=', $id)->delete();
+        \App\Models\ExpendCategories::where('id', '=', $id)->delete();
 
         return $this->sendResponseDataNull('Пункт в справочнике категория расходов успешно удален');
     }
