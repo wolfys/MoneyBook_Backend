@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Core\RegisterController;
+use App\Http\Controllers\Api\Handbook\ExpendCategoriesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(
+    [
+        'middleware' => 'api',
+        'prefix' => 'auth'
+    ], static function () {
+    Route::post('register', [RegisterController::class, 'register'])->name('register');
+    Route::post('login', [RegisterController::class, 'login'])->name('login');
+});
+Route::group(
+    [
+        'middleware' => 'auth:sanctum',
+        'prefix' => 'handbook'
+    ], static function () {
+    Route::resource('expend-categories',ExpendCategoriesController::class);
 });
