@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Handbook\IncomeCategories;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Handbook\ExpendCategories;
 use App\Models\User;
@@ -28,7 +29,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //
-        Gate::define('update-categories', static function (User $user, ExpendCategories $categories) {
+        Gate::define('update-expend-categories', static function (User $user, ExpendCategories $categories) {
+            return $user->id === $categories->user_id;
+        });
+
+        Gate::define('update-income-categories', static function (User $user, IncomeCategories $categories) {
             return $user->id === $categories->user_id;
         });
     }

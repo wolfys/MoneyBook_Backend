@@ -5,7 +5,7 @@ namespace App\Models\Handbook;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @method static where(string $field, string $operator, $null)
+ * @method static where(string $field, string $operator, $value)
  * @method static create(array $array)
  * @method static find($id)
  * @property mixed $user_id

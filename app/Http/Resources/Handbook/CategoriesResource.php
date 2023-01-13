@@ -13,7 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed $created_at
  * @property mixed $updated_at
  */
-class ExpendCategoriesResource extends JsonResource
+class CategoriesResource extends JsonResource
 {
     /**
      * @param Request $request

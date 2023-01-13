@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Core\RegisterController;
 use App\Http\Controllers\Api\Handbook\ExpendCategoriesController;
+use App\Http\Controllers\Api\Handbook\IncomeCategoriesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,5 +29,8 @@ Route::group(
         'middleware' => 'auth:sanctum',
         'prefix' => 'handbook'
     ], static function () {
-    Route::resource('expend-categories',ExpendCategoriesController::class);
+    // Доход
+    Route::resource('expend/categories',ExpendCategoriesController::class);
+    // Расход
+    Route::resource('income/categories',IncomeCategoriesController::class);
 });

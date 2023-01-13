@@ -4,6 +4,12 @@ namespace App\Models\Handbook;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static where(string $field, string $operator, $value)
+ * @method static create(array $array)
+ * @method static find($id)
+ * @property mixed $user_id
+ */
 class IncomeCategories extends Model
 {
     protected $table = "hb__income_categories";

@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ExpendCategoriesRequest extends FormRequest
+class CategoriesRequest extends FormRequest
 {
     public function rules(): array
     {

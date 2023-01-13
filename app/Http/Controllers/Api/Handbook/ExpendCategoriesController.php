@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\Handbook;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Requests\ExpendCategoriesRequest;
-use App\Http\Resources\Handbook\ExpendCategoriesResource;
+use App\Http\Requests\CategoriesRequest;
+use App\Http\Resources\Handbook\CategoriesResource;
 use App\Models\Handbook\ExpendCategories;
 use Gate;
 use Illuminate\Http\JsonResponse;
@@ -23,11 +23,11 @@ class ExpendCategoriesController extends BaseController
      */
     public function index()
     {
-        $data = ExpendCategories::where('user_id','=',null)
-            ->orWhere('user_id','=', auth()->user()->id)
+        $data = ExpendCategories::where('user_id', '=', null)
+            ->orWhere('user_id', '=', auth()->user()->id)
             ->get();
 
-        return $this->sendResponse(ExpendCategoriesResource::collection($data),
+        return $this->sendResponse(CategoriesResource::collection($data),
             'Возвращаем справочник Категории расходов');
     }
 
@@ -40,7 +40,7 @@ class ExpendCategoriesController extends BaseController
      * @authenticated
      * @return JsonResponse
      */
-    public function store(ExpendCategoriesRequest $request)
+    public function store(CategoriesRequest $request)
     {
         $request->validated();
 
@@ -68,14 +68,15 @@ class ExpendCategoriesController extends BaseController
     public function show($id)
     {
 
-        if(ExpendCategories::find($id) === null || !Gate::allows('update-categories', ExpendCategories::find($id))) {
+        if (ExpendCategories::find($id) === null || !Gate::allows('update-expend-categories',
+                ExpendCategories::find($id))) {
             return $this->sendError('Пункт не найден или его редактирование запрещено.');
         }
 
         $data = ExpendCategories::where('id', '=', $id)->first();
 
 
-        return $this->sendResponse(new ExpendCategoriesResource($data),
+        return $this->sendResponse(new CategoriesResource($data),
             "Запись {$id} в Категория расходов найдена");
     }
 
@@ -91,15 +92,16 @@ class ExpendCategoriesController extends BaseController
      * @authenticated
      * @return JsonResponse
      */
-    public function update(ExpendCategoriesRequest $request, $id)
+    public function update(CategoriesRequest $request, $id)
     {
         $request->validated();
 
-        if(ExpendCategories::find($id) === null || !Gate::allows('update-categories', ExpendCategories::find($id))) {
+        if (ExpendCategories::find($id) === null || !Gate::allows('update-expend-categories',
+                ExpendCategories::find($id))) {
             return $this->sendError('Пункт не найден или его редактирование запрещено.');
         }
 
-        ExpendCategories::where('id','=', $id)->update([
+        ExpendCategories::where('id', '=', $id)->update([
             'user_id' => auth()->user()->id,
             'name' => $request->get('name')
         ]);
@@ -120,12 +122,13 @@ class ExpendCategoriesController extends BaseController
      */
     public function destroy($id)
     {
-        if(ExpendCategories::find($id) === null || !Gate::allows('update-categories', ExpendCategories::find($id))) {
+        if (ExpendCategories::find($id) === null || !Gate::allows('update-categories',
+                ExpendCategories::find($id))) {
             return $this->sendError('Пункт не найден или его редактирование запрещено.');
         }
 
 
-        ExpendCategories::where('id','=', $id)->delete();
+        ExpendCategories::where('id', '=', $id)->delete();
 
         return $this->sendResponseDataNull('Пункт в справочнике категория расходов успешно удален');
     }
