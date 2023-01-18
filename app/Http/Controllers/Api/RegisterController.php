@@ -1,11 +1,12 @@
 <?php
 
 
-namespace App\Http\Controllers\Api\Core;
+namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Core\RegisterRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Models\Settings;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,6 +40,9 @@ class RegisterController extends Controller
         $user = User::create($input);
         $success['token'] = $user->createToken($user->email)->plainTextToken;
         $success['name'] = $user->name;
+        $user_id = $user->id;
+
+        $data = $this->setUserSettings($user_id);
 
         return $this->sendResponse($success, 'User register successfully.');
 
@@ -61,13 +65,31 @@ class RegisterController extends Controller
 
             $user = Auth::user();
             $success['token'] = $user->createToken($user->email)->plainTextToken;
-            $success['name'] = $user->name;
+            $success['initials'] = getUserInitials($user->name, $user->last_name,$user->second_name);
+            $success['dark'] = $user->setting()->get()[0]['dark_mode'];
             return $this->sendResponse($success, 'Успешная авторизация');
 
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
 
+    }
+
+    private function setUserSettings($user_id)
+    {
+        $income = [1,2,3,4,5,6,7];
+
+        $expend = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32];
+
+        Settings::create([
+            'user_id' => $user_id,
+            'income_category_main' => json_encode($income),
+            "income_category_active" => json_encode($income),
+            "expend_category_main" => json_encode($expend),
+            "expend_category_active" => json_encode($expend)
+        ]);
+
+        return true;
     }
 
 }

@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Requests\Core;
+namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RegisterRequest extends FormRequest
+class SettingsRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'second_name' => 'nullable|string',
-            'last_name' => 'nullable|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string',
-            'c_password' => 'required|string|same:password',
+            'balance_credit_card_full' => 'nullable|integer',
+            'expend_category_main' => 'nullable|json',
+            'income_category_main' => 'nullable|json',
+            'expend_category_active' => 'nullable|json',
+            'income_category_active' => 'nullable|json',
+            'dark_mode' => 'nullable|boolean'
         ];
     }
 

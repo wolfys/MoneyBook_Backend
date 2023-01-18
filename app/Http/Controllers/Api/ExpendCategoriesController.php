@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\Handbook;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Handbook\CategoriesRequest;
-use App\Http\Resources\Handbook\CategoriesResource;
+use App\Http\Requests\CategoriesRequest;
+use App\Http\Resources\CategoriesResource;
 use App\Models\ExpendCategories;
 use Illuminate\Http\JsonResponse;
 
@@ -24,6 +24,30 @@ class ExpendCategoriesController extends Controller
     {
         $data = ExpendCategories::where('user_id', '=', null)
             ->orWhere('user_id', '=', auth()->user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return $this->sendResponse(CategoriesResource::collection($data),
+            'Возвращаем справочник Категории расходов');
+    }
+
+    /**
+     * Получить категории расхода выбранные пользователем.
+     *
+     * @group Расходы
+     * @subgroup Категории
+     * @authenticated
+     * @return JsonResponse
+     */
+    public function indexUserCategory()
+    {
+
+        $userSettingData = json_decode(auth()->user()->setting()->first()->expend_category_active);
+
+
+
+        $data = ExpendCategories::whereIn('id', $userSettingData)
+            ->orderBy('id', 'desc')
             ->get();
 
         return $this->sendResponse(CategoriesResource::collection($data),

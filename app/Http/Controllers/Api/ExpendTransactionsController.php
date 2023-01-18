@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\Core;
+namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Core\IndexTransactionsRequest;
-use App\Http\Requests\Core\TransactionsRequest;
-use App\Http\Resources\Core\TransactionsResource;
+use App\Http\Requests\IndexTransactionsRequest;
+use App\Http\Requests\TransactionsRequest;
+use App\Http\Resources\TransactionsResource;
 use App\Models\ExpendTransactions;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -28,11 +28,14 @@ class ExpendTransactionsController extends Controller
         $start_date = Carbon::parse($request->get('start_date'))->format('Y-m-d 00:00:00');
         $end_date = Carbon::parse($request->get('end_date'))->format('Y-m-d 23:59:59');
 
-        $data = ExpendTransactions::where('user_id', '=', auth()->user()->id)
+
+
+        $data = auth()->user()->expendTransactions()
             ->select('*','expend_category_id as category_id')
             ->whereDate('date_transaction', '>=', $start_date)
             ->whereDate('date_transaction', '<=', $end_date)
             ->with('category','user')
+            ->orderBy('date_transaction','desc')
             ->get();
 
         return $this->sendResponse(TransactionsResource::collection($data),'Получаем список расходов');
@@ -57,7 +60,7 @@ class ExpendTransactionsController extends Controller
 
         ExpendTransactions::create([
            'user_id' => auth()->user()->id,
-           'income_category_id' => $request->get('category_id'),
+           'expend_category_id' => $request->get('category_id'),
             'money' => $request->get('money'),
             'comment' => $request->get('comment'),
             'date_transaction' => Carbon::parse($request->get('date_transaction'))->toDateTime(),
@@ -109,7 +112,7 @@ class ExpendTransactionsController extends Controller
         checkUsers(ExpendTransactions::where('id', '=', $id)->first(),'expend-transactions');
 
         ExpendTransactions::where('id', '=', $id)->update([
-            'income_category_id' => $request->get('category_id'),
+            'expend_category_id' => $request->get('category_id'),
             'money' => $request->get('money'),
             'comment' => $request->get('comment'),
             'date_transaction' => Carbon::parse($request->get('date_transaction'))->toDateTime(),

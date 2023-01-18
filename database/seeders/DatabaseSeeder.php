@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             DemoUserSeeder::class,
             ExpendCategoriesSeeder::class,
             IncomeCategoriesSeeder::class,
+            SettingsSeeder::class,
         ]);
 
         \App\Models\IncomeTransactions::factory(10)->create();

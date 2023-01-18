@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Handbook;
+namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class CategoriesRequest extends FormRequest
+class IndexTransactionsRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date'
         ];
     }
 

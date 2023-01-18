@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\Core\RegisterController;
-use App\Http\Controllers\Api\Handbook\ExpendCategoriesController;
-use App\Http\Controllers\Api\Handbook\IncomeCategoriesController;
-use App\Http\Controllers\Api\Core\IncomeTransactionsController;
-use App\Http\Controllers\Api\Core\ExpendTransactionsController;
+use App\Http\Controllers\Api\ExpendCategoriesController;
+use App\Http\Controllers\Api\ExpendTransactionsController;
+use App\Http\Controllers\Api\IncomeCategoriesController;
+use App\Http\Controllers\Api\IncomeTransactionsController;
+use App\Http\Controllers\Api\SettingsController;
+use App\Http\Controllers\Api\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,7 @@ Route::group(
     ], static function () {
     // Расход
     Route::resource('categories', IncomeCategoriesController::class, ['as' => 'income']);
+    Route::get('active/categories', [IncomeCategoriesController::class,'indexUserCategory']);
     Route::resource('transactions', IncomeTransactionsController::class, ['as' => 'income']);
 });
 
@@ -43,6 +45,17 @@ Route::group(
     ], static function () {
     // Доход
     Route::resource('categories', ExpendCategoriesController::class, ['as' => 'expend']);
+    Route::get('active/categories', [ExpendCategoriesController::class,'indexUserCategory']);
     Route::resource('transactions', ExpendTransactionsController::class, ['as' => 'expend']);
+});
+
+Route::group(
+    [
+        'middleware' => 'auth:sanctum',
+        'prefix' => 'user'
+    ], static function () {
+    // Доход
+    Route::resource('settings', SettingsController::class, ['as' => 'settings'])
+        ->only('index','update');
 });
 

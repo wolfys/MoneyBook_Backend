@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\Handbook;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Handbook\CategoriesRequest;
-use App\Http\Resources\Handbook\CategoriesResource;
+use App\Http\Requests\CategoriesRequest;
+use App\Http\Resources\CategoriesResource;
 use App\Models\IncomeCategories;
 use Illuminate\Http\JsonResponse;
 
@@ -24,6 +24,29 @@ class IncomeCategoriesController extends Controller
     {
         $data = IncomeCategories::where('user_id', '=', null)
             ->orWhere('user_id', '=', auth()->user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return $this->sendResponse(CategoriesResource::collection($data),
+            'Возвращаем справочник Категории доходов');
+    }
+
+    /**
+     * Получить категории дохода выбранные пользователем.
+     *
+     * @group Доходы
+     * @subgroup Категории
+     * @authenticated
+     * @return JsonResponse
+     */
+    public function indexUserCategory()
+    {
+
+        $userSettingData = json_decode(auth()->user()->setting()->first()->income_category_active);
+
+
+        $data = IncomeCategories::whereIn('id', $userSettingData)
+            ->orderBy('id', 'desc')
             ->get();
 
         return $this->sendResponse(CategoriesResource::collection($data),

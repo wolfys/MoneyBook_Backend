@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\Core;
+namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Core\IndexTransactionsRequest;
-use App\Http\Requests\Core\TransactionsRequest;
-use App\Http\Resources\Core\TransactionsResource;
+use App\Http\Requests\IndexTransactionsRequest;
+use App\Http\Requests\TransactionsRequest;
+use App\Http\Resources\TransactionsResource;
 use App\Models\IncomeTransactions;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -28,7 +28,7 @@ class IncomeTransactionsController extends Controller
         $start_date = Carbon::parse($request->get('start_date'))->format('Y-m-d 00:00:00');
         $end_date = Carbon::parse($request->get('end_date'))->format('Y-m-d 23:59:59');
 
-        $data = IncomeTransactions::where('user_id', '=', auth()->user()->id)
+        $data = auth()->user()->incomeTransactions()
             ->select('*','income_category_id as category_id')
             ->whereDate('date_transaction', '>=', $start_date)
             ->whereDate('date_transaction', '<=', $end_date)
@@ -55,7 +55,7 @@ class IncomeTransactionsController extends Controller
     {
         $request->validated();
 
-        \App\Models\IncomeTransactions::create([
+        IncomeTransactions::create([
            'user_id' => auth()->user()->id,
            'income_category_id' => $request->get('category_id'),
             'money' => $request->get('money'),
