@@ -22,7 +22,7 @@ class ExpendCategoriesSeeder extends Seeder
             'Аренда',
             'Коммуналка',
             'Кредит',
-            'Кредитная карта',
+            'Пополнение кредитной карты',
             'Кино',
             'Игры',
             'Театры',
@@ -37,7 +37,7 @@ class ExpendCategoriesSeeder extends Seeder
             'Подписки',
             'Дал в долг',
             'Книги',
-            'В Кубышку',
+            'В Инвестиции',
             'Алкоголь',
             'Вкусняшки',
             'Столовая',
@@ -56,12 +56,5 @@ class ExpendCategoriesSeeder extends Seeder
         }
 
         \DB::table('expend_categories')->insert($data);
-
-        \DB::table('expend_categories')->insert([
-           'name' => 'Шоколадки',
-           'user_id' => 1,
-           'created_at' => now(),
-           'updated_at' => now()
-        ]);
     }
 }

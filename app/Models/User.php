@@ -52,11 +52,11 @@ class User extends Authenticatable
 
     public function expendTransactions(): HasOne
     {
-        return $this->hasOne(ExpendTransactions::class);
+        return $this->hasOne(ExpendTransactions::class)->with('category');
     }
 
     public function incomeTransactions(): HasOne
     {
-        return $this->hasOne(IncomeTransactions::class);
+        return $this->hasOne(IncomeTransactions::class)->with('category');
     }
 }

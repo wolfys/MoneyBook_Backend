@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @method static where(string $field, string $operator, $value)
  * @method static create(array $array)
+ * @method static orderBy(string $filed, string $order)
  * @property mixed $user_id
  */
 class IncomeTransactions extends Model

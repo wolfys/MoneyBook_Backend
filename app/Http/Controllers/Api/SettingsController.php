@@ -56,7 +56,7 @@ class SettingsController extends Controller
                 $request->get('expend_category_active') : $value->expend_category_active;
             $arr['income_category_active'] = ($request->get('income_category_active')) ?
                 $request->get('income_category_active') : $value->income_category_active;
-            $arr['dark_mode'] = ($request->get('dark_mode')) ? $request->get('dark_mode') :
+            $arr['dark_mode'] = ($request->get('dark_mode') !== null) ? $request->get('dark_mode') :
                 $value->dark_mode;
         }
 

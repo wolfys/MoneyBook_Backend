@@ -16,7 +16,8 @@ class Settings extends Model
         'expend_category_main',
         'income_category_main',
         'expend_category_active',
-        'income_category_active'
+        'income_category_active',
+        'dark_mode'
     ];
 
 }

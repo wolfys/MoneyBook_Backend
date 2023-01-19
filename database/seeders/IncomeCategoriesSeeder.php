@@ -31,12 +31,5 @@ class IncomeCategoriesSeeder extends Seeder
         }
 
         \DB::table('income_categories')->insert($data);
-
-        \DB::table('income_categories')->insert([
-            'name' => 'Нашёл на улице',
-            'user_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
     }
 }

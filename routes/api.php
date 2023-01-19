@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\IncomeCategoriesController;
 use App\Http\Controllers\Api\IncomeTransactionsController;
 use App\Http\Controllers\Api\SettingsController;
 use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\StatisticsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,20 @@ Route::group(
     Route::post('register', [RegisterController::class, 'register'])->name('register');
     Route::post('login', [RegisterController::class, 'login'])->name('login');
 });
+
+Route::group(
+    [
+        'middleware' => 'auth:sanctum',
+        'prefix' => 'statistics'
+    ], static function () {
+    Route::get('general',[StatisticsController::class,'getGeneralInformation'])
+        ->name('statistics.get-general-information');
+    Route::get('period',[StatisticsController::class,'getStatisticPeriod'])
+        ->name('statistics.get-statistic-period');
+    Route::get('category/{type}',[StatisticsController::class,'getTypeTransactionInCategory']);
+});
+
+
 Route::group(
     [
         'middleware' => 'auth:sanctum',

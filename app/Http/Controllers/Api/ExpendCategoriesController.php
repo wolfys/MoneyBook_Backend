@@ -47,7 +47,7 @@ class ExpendCategoriesController extends Controller
 
 
         $data = ExpendCategories::whereIn('id', $userSettingData)
-            ->orderBy('id', 'desc')
+            ->orderBy('name', 'asc')
             ->get();
 
         return $this->sendResponse(CategoriesResource::collection($data),

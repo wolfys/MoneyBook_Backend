@@ -46,7 +46,7 @@ class IncomeCategoriesController extends Controller
 
 
         $data = IncomeCategories::whereIn('id', $userSettingData)
-            ->orderBy('id', 'desc')
+            ->orderBy('name', 'asc')
             ->get();
 
         return $this->sendResponse(CategoriesResource::collection($data),

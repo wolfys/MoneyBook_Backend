@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property mixed $user_id
  * @method static where(string $string, string $string1, $id)
  * @method static create(array $array)
+ * @method static orderBy(string $field, string $order)
  */
 class ExpendTransactions extends Model
 {
