@@ -64,8 +64,6 @@ class IncomeCategoriesController extends Controller
      */
     public function store(CategoriesRequest $request)
     {
-        $request->validated();
-
         IncomeCategories::create([
             'user_id' => auth()->user()->id,
             'name' => $request->get('name')
@@ -111,8 +109,6 @@ class IncomeCategoriesController extends Controller
      */
     public function update(CategoriesRequest $request, $id)
     {
-        $request->validated();
-
         checkUsers(IncomeCategories::where('id', '=', $id)->first(),'income-categories');
 
         IncomeCategories::where('id', '=', $id)->update([

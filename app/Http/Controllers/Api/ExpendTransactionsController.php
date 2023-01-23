@@ -56,8 +56,6 @@ class ExpendTransactionsController extends Controller
      */
     public function store(TransactionsRequest $request)
     {
-        $request->validated();
-
         ExpendTransactions::create([
            'user_id' => auth()->user()->id,
            'expend_category_id' => $request->get('category_id'),

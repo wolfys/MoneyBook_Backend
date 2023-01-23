@@ -44,8 +44,6 @@ class ExpendCategoriesController extends Controller
 
         $userSettingData = json_decode(auth()->user()->setting()->first()->expend_category_active);
 
-
-
         $data = ExpendCategories::whereIn('id', $userSettingData)
             ->orderBy('name', 'asc')
             ->get();
@@ -65,8 +63,6 @@ class ExpendCategoriesController extends Controller
      */
     public function store(CategoriesRequest $request)
     {
-        $request->validated();
-
         ExpendCategories::create([
             'user_id' => auth()->user()->id,
             'name' => $request->get('name')
@@ -112,8 +108,6 @@ class ExpendCategoriesController extends Controller
      */
     public function update(CategoriesRequest $request, $id)
     {
-        $request->validated();
-
         checkUsers(ExpendCategories::where('id', '=', $id)->first(),'expend-categories');
 
         ExpendCategories::where('id', '=', $id)->update([

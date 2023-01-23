@@ -53,8 +53,6 @@ class IncomeTransactionsController extends Controller
      */
     public function store(TransactionsRequest $request)
     {
-        $request->validated();
-
         IncomeTransactions::create([
            'user_id' => auth()->user()->id,
            'income_category_id' => $request->get('category_id'),

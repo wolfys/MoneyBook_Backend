@@ -38,10 +38,8 @@ class StatisticsController extends Controller
      * @authenticated
      * @return JsonResponse
      */
-    public function getTypeTransactionInCategory(StatisticRequest $request, $type) {
-
-        $request->validated();
-
+    public function getTypeTransactionInCategory(StatisticRequest $request, $type)
+    {
         if($type !== 'income' && $type !== 'expend')
         {
             return $this->sendError('Тип должен быть указан корректно');
@@ -77,9 +75,6 @@ class StatisticsController extends Controller
      */
     public function getStatisticPeriod(StatisticRequest $request)
     {
-
-        $request->validated();
-
         $start_date = Carbon::parse($request->get('start'))->format('Y-m-d 00:00:00');
         $end_date = Carbon::parse($request->get('end'))->format('Y-m-d 23:59:59');
 

@@ -39,8 +39,6 @@ class SettingsController extends Controller
      */
     public function update(SettingsRequest $request)
     {
-        $request->validated();
-
         $data = auth()->user()->setting()->get();
 
         $arr = [];
